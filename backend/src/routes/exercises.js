@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
 router.put("/", async (req, res) => {
   try {
     const exercise = await exerciseModel.findById(req.body.exerciseID);
-    const account = await accountModel.findById(req.body.accountID);
+    const account = await accountModel.findById(req.body.userID);
     account.savedExercises.push(exercise);
     await account.save();
     res.json({ savedExercises: account.savedExercises });
@@ -36,20 +36,20 @@ router.put("/", async (req, res) => {
   }
 });
 
-router.get("/savedExercises/ids", async (req, res) => {
+router.get("/savedExercises/ids/:userID", async (req, res) => {
   try {
-    const account = await accountModel.findById(req.body.accountID);
+    const account = await accountModel.findById(req.params.userID);
     res.json({ savedExercises: account?.savedExercises });
   } catch (err) {
     res.json(err);
   }
 });
 
-router.get("/savedExercises", async (req, res) => {
+router.get("/savedExercises/:userID", async (req, res) => {
   try {
-    const account = await accountModel.findById(req.body.accountID);
+    const account = await accountModel.findById(req.params.userID);
     const savedExercises = await exerciseModel.find({
-      _id: { $in: user.savedExercises },
+      _id: { $in: account.savedExercises },
     });
     res.json({ savedExercises });
   } catch (err) {
