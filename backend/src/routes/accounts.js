@@ -43,6 +43,7 @@ router.post("/login", async (req, res) => {
 
   dotenv.config();
   const secret = process.env.SECRET;
+
   const token = jwt.sign({ id: account._id }, secret);
   res.json({ token, userID: account._id });
 });
