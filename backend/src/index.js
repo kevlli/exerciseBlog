@@ -15,7 +15,7 @@ app.use(cors());
 app.use("/auth", accountRouter);
 
 mongoose.connect(
-  `mongodb+srv://kevlli:${pswd}@recipes.8mnryir.mongodb.net/recipes?retryWrites=true&w=majority`
+  `mongodb+srv://kevlli:${pswd}@exercises.z8z7xbu.mongodb.net/?retryWrites=true&w=majority`
 );
 
 app.listen(3001, () => console.log("Server is up"));
