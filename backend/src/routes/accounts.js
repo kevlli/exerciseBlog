@@ -17,6 +17,9 @@ router.post("/register", async (req, res) => {
     return res.json({ message: "Username is taken." });
   }
 
+  if (password.length <= 5) {
+    return res.json({ message: "Password must be more than 5 characters." });
+  }
   const encryptedPassword = await bcrypt.hash(password, 15);
   const newAccount = new accountModel({
     username,
