@@ -35,10 +35,11 @@ router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   const account = await accountModel.findOne({ username });
+  // in the case of login, finds if the account is registered.
   if (!account) {
     return res.json({ message: "Account not found." });
   }
-
+  // compares password with encrypted hash stored in database
   const correctPassword = await bcrypt.compare(password, account.password);
   if (!correctPassword) {
     return res.json({ message: "Invalid password." });
@@ -46,6 +47,7 @@ router.post("/login", async (req, res) => {
 
   dotenv.config();
   const secret = process.env.SECRET;
+  // utilizing env variables to hide secret encryption key
 
   const token = jwt.sign({ id: account._id }, secret);
   res.json({ token, userID: account._id });

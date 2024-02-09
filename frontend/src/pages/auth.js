@@ -13,6 +13,7 @@ export const Auth = () => {
 };
 
 const Form = ({
+  // reusable form function
   username,
   setUsername,
   password,

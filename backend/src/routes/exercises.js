@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
+    // home page lists all exercises
     const response = await exerciseModel.find({});
     res.json(response);
   } catch (err) {
@@ -28,6 +29,7 @@ router.put("/", async (req, res) => {
   try {
     const exercise = await exerciseModel.findById(req.body.exerciseID);
     const account = await accountModel.findById(req.body.userID);
+    // adds this exercise to the account's saved exercises array
     account.savedExercises.push(exercise);
     await account.save();
     res.json({ savedExercises: account.savedExercises });
@@ -39,6 +41,7 @@ router.put("/", async (req, res) => {
 router.get("/savedExercises/ids/:userID", async (req, res) => {
   try {
     const account = await accountModel.findById(req.params.userID);
+    // retrieves the saved exercises of the account with that user id
     res.json({ savedExercises: account?.savedExercises });
   } catch (err) {
     res.json(err);

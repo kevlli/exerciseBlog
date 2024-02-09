@@ -7,6 +7,7 @@ import { exerciseRouter } from "./routes/exercises.js";
 
 dotenv.config();
 const pswd = process.env.MONGOPSWD;
+// hidden pswd for mongo database using env variables
 
 const app = express();
 
