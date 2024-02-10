@@ -2,6 +2,7 @@ import { exerciseModel } from "../models/Exercises.js";
 import { accountModel } from "../models/accounts.js";
 import mongoose from "mongoose";
 import express from "express";
+import { verifyJWT } from "./accounts.js";
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", verifyJWT, async (req, res) => {
   const exercise = new exerciseModel(req.body);
   try {
     const response = await exercise.save();
@@ -25,7 +26,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/", async (req, res) => {
+router.put("/", verifyJWT, async (req, res) => {
   try {
     const exercise = await exerciseModel.findById(req.body.exerciseID);
     const account = await accountModel.findById(req.body.userID);

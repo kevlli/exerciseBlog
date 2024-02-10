@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useGetUserID } from "../hooks/useGetUserID";
+import { useCookies } from "react-cookie";
 
 export const Home = () => {
   const [exercises, setExercises] = useState([]);
 
   const [savedExercises, setSavedExercises] = useState([]);
+
+  const [cookies, _] = useCookies(["access_token"]);
 
   const userID = useGetUserID();
 
@@ -30,15 +33,20 @@ export const Home = () => {
       }
     };
     fetchExercise();
-    fetchSavedExercise();
+
+    if (cookies.access_token) fetchSavedExercise();
   }, []);
 
   const saveExercise = async (exerciseID) => {
     try {
-      const response = await axios.put("http://localhost:3001/exercise", {
-        exerciseID,
-        userID,
-      });
+      const response = await axios.put(
+        "http://localhost:3001/exercise",
+        {
+          exerciseID,
+          userID,
+        },
+        { headers: { authorization: cookies.access_token } }
+      );
       setSavedExercises(response.data.savedExercises);
     } catch (err) {
       console.error(err);

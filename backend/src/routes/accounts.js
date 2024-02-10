@@ -37,20 +37,33 @@ router.post("/login", async (req, res) => {
   const account = await accountModel.findOne({ username });
   // in the case of login, finds if the account is registered.
   if (!account) {
-    return res.json({ message: "Account not found." });
+    return res.status(400).json({ message: "Account not found." });
   }
   // compares password with encrypted hash stored in database
   const correctPassword = await bcrypt.compare(password, account.password);
   if (!correctPassword) {
-    return res.json({ message: "Invalid password." });
+    return res.status(400).json({ message: "Invalid password." });
   }
 
   dotenv.config();
-  const secret = process.env.SECRET;
   // utilizing env variables to hide secret encryption key
 
-  const token = jwt.sign({ id: account._id }, secret);
+  const token = jwt.sign({ id: account._id }, process.env.SECRET);
   res.json({ token, userID: account._id });
 });
 
 export { router as accountRouter };
+
+export const verifyJWT = (req, res, next) => {
+  // uses middlware to validate token.
+  // Runs before every important api request that requires authentification
+  const token = req.headers.authorization;
+  if (token) {
+    jwt.verify(token, process.env.SECRET, (err) => {
+      if (err) return res.sendStatus(403);
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
+};

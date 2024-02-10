@@ -22,7 +22,16 @@ export const SavedExercises = () => {
 
   return (
     <div>
-      <h1>Saved Exercises</h1>
+      <h1>Workout Routine</h1>
+      <h3>
+        {" "}
+        Total Workout Duration:{" "}
+        {savedExercises.reduce(
+          (result, current) => result + current.duration,
+          0
+        )}{" "}
+        minutes
+      </h3>
       <ul>
         {savedExercises.map((exercise) => (
           <li key={exercise._id}>
@@ -33,7 +42,7 @@ export const SavedExercises = () => {
               <p>{exercise.instructions}</p>
             </div>
             <img src={exercise.imageUrl} alt={exercise.name} />
-            <p>Duration: {exercise.duration} seconds</p>
+            <p>Duration: {exercise.duration} minutes</p>
           </li>
         ))}
       </ul>

@@ -2,9 +2,11 @@ import { useState } from "react";
 import axios from "axios";
 import { useGetUserID } from "../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 export const CreateExercise = () => {
   const userID = useGetUserID();
+  const [cookies, _] = useCookies(["access_token"]);
   const [exercise, setExercise] = useState({
     name: "",
     equipment: [],
@@ -35,7 +37,11 @@ export const CreateExercise = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
-      const resp = await axios.post("http://localhost:3001/exercise", exercise);
+      const resp = await axios.post(
+        "http://localhost:3001/exercise",
+        exercise,
+        { headers: { authorization: cookies.access_token } }
+      );
       console.log(resp);
       alert("Exercise added!");
       navigate("/");
@@ -76,7 +82,7 @@ export const CreateExercise = () => {
           name="imageUrl"
           onChange={handleChange}
         />
-        <label htmlFor="duration">Duration (seconds)</label>
+        <label htmlFor="duration">Approximate Duration (minutes)</label>
         <input
           type="number"
           id="duration"
