@@ -34,7 +34,7 @@ export const Home = () => {
     };
     fetchExercise();
 
-    if (cookies.access_token) fetchSavedExercise();
+    if (cookies.access_token) fetchSavedExercise(); // crashes if you don't check for access token first
   }, []);
 
   const saveExercise = async (exerciseID) => {
@@ -72,9 +72,13 @@ export const Home = () => {
             </div>
             <div className="instructions">
               <p>{exercise.instructions}</p>
+              <p>
+                {" "}
+                <b>Equipment:</b> {exercise.equipment.toString()}
+              </p>
             </div>
             <img src={exercise.imageUrl} alt={exercise.name} />
-            <p>Duration: {exercise.duration} seconds</p>
+            <p>Approximate Duration: {exercise.duration} minutes</p>
           </li>
         ))}
       </ul>

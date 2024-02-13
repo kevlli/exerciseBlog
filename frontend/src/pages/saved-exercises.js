@@ -42,7 +42,7 @@ export const SavedExercises = () => {
               <p>{exercise.instructions}</p>
             </div>
             <img src={exercise.imageUrl} alt={exercise.name} />
-            <p>Duration: {exercise.duration} minutes</p>
+            <p>Approximate Duration: {exercise.duration} minutes</p>
           </li>
         ))}
       </ul>
